@@ -1,11 +1,11 @@
 <view class="content">
-  <image class="big_img" src="https://p1.music.126.net/_uEfeAcUZ_pUJMuNqH7LXw==/109951162821957253.jpg?param=200y200"></image>
-  <view class="title">儿时</view>
+  <image class="big_img" src="{{song.album.blurPicUrl}}"></image>
+  <view class="title">{{song.name}}</view>
   <view class="middle">
     <swiper class="midddle-swiper">
       <swiper-item class="cd-rap">
         <view class="cd-image">
-          <image src="https://p1.music.126.net/_uEfeAcUZ_pUJMuNqH7LXw==/109951162821957253.jpg?param=200y200" style="animation-play-state:{{state=='play'?'running':'paused'}}"></image>
+          <image src="{{song.album.picUrl}}" style="animation-play-state:{{state=='play'?'running':'paused'}}"></image>
         </view>
       </swiper-item>
       <swiper-item>

@@ -10,18 +10,38 @@ Page({
     },
     id:'',
     state:"play",
+    song:null
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
     var mid = options.mid
     this.setData({
       id:mid
     })
-    
+    this.getSongInfoById()
+  },
+
+  getSongInfoById:function(){
+    var curId=this.data.id
+    var _this = this
+    wx.request({
+      url: 'https://music.163.com/api/song/detail/?id='+curId+'&ids=['+curId+']',
+     
+      success:function(res){
+        var msong=res.data.songs[0];
+        _this.setData({
+          song:msong
+        })
+        console.log(_this.data.song)
+      },
+      fail:function(){
+        console.log(111)
+      }
+
+    })
   },
 
   playOrPause:function(){
