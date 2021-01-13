@@ -1,0 +1,35 @@
+<swiper class="swi" indicator-dots="true" indicator-color="yellow" autoplay="true" interval="2000" circular="true">
+  <block wx:for="{{imgUrls}}" wx:for-item="imgOne"  wx:key="key">
+    <swiper-item>
+      <image src="{{imgOne}}" />
+    </swiper-item>
+  </block>
+</swiper>
+<view class="musicContainer">
+  <view class="left">
+    <image src="https://p1.music.126.net/_uEfeAcUZ_pUJMuNqH7LXw==/109951162821957253.jpg?param=200y200"></image>
+  </view>
+  <view class="center">
+    <view class="songName">儿时ddd</view>
+    <view class="singerName">孫小東</view>
+  </view>
+  <view class="right">
+    <image src="../../images/play.png" bindtap="gotoPlay"></image>
+  </view>
+</view>
+<block wx:for="{{songs}}" wx:for-item="song" wx:key="key">
+  <view class="musicContainer">
+    <view class="left">
+      <image src="{{song.album.picUrl}}"></image>
+    </view>
+    <view class="center">
+      <view class="songName">{{song.name}}</view>
+      <view class="singerName">{{song.artists}}-{{song.name}}</view>
+    </view>
+    <view class="right">
+    <navigator url="../play/play?mid={{song.id}}" hover-class="navigator-hover">
+      <image src="../../images/play.png"   data-hi="Weixin" data-weather="weather"></image>
+    </navigator>
+    </view>
+  </view>
+</block>
