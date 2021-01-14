@@ -10,7 +10,10 @@ Page({
     },
     id:'',
     state:"play",
-    song:null
+    song:null,
+    lyricArray:[],
+    scrollTop:0,
+    currentIndex:0,
   },
 
   /**
@@ -22,6 +25,7 @@ Page({
       id:mid
     })
     this.getSongInfoById()
+    this.getLyricById()
   },
 
   getSongInfoById:function(){
@@ -44,6 +48,54 @@ Page({
     })
   },
 
+  getLyricById:function(){
+    var curId=this.data.id
+    var _this = this
+    wx.request({
+      url: 'https://music.163.com/api/song/lyric?os=pc&id='+curId+'&lv=-1&kv=-1&tv=-1',
+      success:function(res){
+        var lyric=res.data.lrc.lyric
+        var result = _this.parseLyric(lyric)
+        var fResult =  _this.sliceNull(result)
+        _this.setData({
+          lyricArray:fResult
+        })
+      }
+    })
+  },
+  parseLyric:function(lyric){
+    var lyricR = []; 
+    var lyricArray = lyric.split("\n");
+    
+    if(lyricArray[lyricArray.length-1]==""){
+      lyricArray.pop();
+    }
+    var pattern = /\[\d{2}:\d{2}\.\d{2,3}\]/;
+    lyricArray.forEach(function(v,i,a){
+      
+     var r = v.replace(pattern,"");//每句歌词
+     var t = v.match(pattern)//每句歌词对应时间
+     if(t != null){
+      var re = t[0].slice(1,-1)
+      var tA=re.split(":")
+      var fT=parseFloat(tA[0]*60+parseFloat(tA[1]));
+      lyricR.push([fT,r])
+     }
+  
+    })
+    return lyricR
+  },
+
+  sliceNull:function(lyricA){//去掉空歌词 
+    var result = []
+    for(var i=0; i<lyricA.length;i++){
+      if(lyricA[i][1] !=""){
+        result.push(lyricA[i])
+      }
+    }
+    return result;
+  },
+
   playOrPause:function(){
     var musicState = this.data.state
     if(musicState=="play"){
@@ -61,6 +113,38 @@ Page({
         state:"play"
       })
     }
+  },
+  changeTime:function(e){
+    var currentTime = e.detail.currentTime
+    var lyricArray = this.data.lyricArray;
+    var _this = this
+    //计算滚动条位置
+    if(this.data.currentIndex >= 8){
+      this.setData({
+        scrollTop:(this.data.currentIndex-8)*30
+      })
+    }
+    
+    if(this.data.currentIndex == lyricArray.length - 2){
+      
+      if(currentTime>=lyricArray[lyricArray.length-1][0]){
+        this.setData({
+          currentIndex:lyricArray-1
+        })
+      }
+    }else{
+      for(var i=0;i<lyricArray.length-1;i++){
+        if(currentTime>=lyricArray[i][0] && currentTime <lyricArray[i+1][0]){
+          console.log("in")
+          this.setData({
+            currentIndex:i
+          })
+          console.log(this.currentIndex)
+        }
+      }
+    }
+
+    
   },
 
   /**
