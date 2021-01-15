@@ -25,7 +25,9 @@ Page({
         },
         artists:"333"
       }
-    ]
+    ],
+    kw:'',
+    albumPic:[]
   },
   /**
    * 生命周期函数--监听页面加载
@@ -95,5 +97,51 @@ Page({
    
     var keyword = e.detail.value;
     console.log(keyword)
+    this.setData({
+      kw:keyword
+    })
+  },
+  do_search:function(){
+    var kw = this.data.kw
+    var _this = this;
+    var searchId=[]
+    wx.request({
+      url: 'https://music.163.com/api/search/get?s='+kw+'&type=1&limit=6',
+      success:function(res){
+
+        var songs = res.data.result.songs
+        for(var i=0;i<songs.length.length;i++){
+          console.log(songs[i].id)
+        }
+        for(var val in songs){
+          searchId.push(songs[val].id)
+        }
+        
+        _this.setData({
+          songs:songs
+        })
+        _this.getMusicImg(searchId,0,searchId.length)
+      }
+    })
+  },
+  getMusicImg(searchId,i,length){
+    var _this = this
+    var albumPic=_this.data.albumPic
+    wx.request({
+      url: 'https://music.163.com/api/song/detail/?id='+searchId[i]+'&ids=['+searchId[i]+']',
+      success:function(res){
+        var albumPici=res.data.songs[0].album.picUrl
+        var name=res.data.songs[0].album.name
+        albumPic.push(albumPici)
+        _this.setData({
+          albumPic:albumPic
+        })
+        console.log(albumPic)
+        if(++i<length){
+          _this.getMusicImg(searchId,i,length)
+        }
+      }
+    })
   }
+    
 })

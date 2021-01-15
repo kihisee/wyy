@@ -9,18 +9,18 @@
   <view class="search_input">
     <input type="text" class="type" bindinput="getkeyword" />
   </view>
-  <view class="search_button">
+  <view class="search_button" bindtap="do_search">
     搜索
   </view>
 </view>
-<block wx:for="{{songs}}" wx:for-item="song" wx:key="key">
+<block wx:for="{{songs}}" wx:for-item="song" wx:key="key" wx:for-index="i">
   <view class="musicContainer">
     <view class="left">
-      <image src="{{song.album.picUrl}}"></image>
+      <image src="{{albumPic[i]}}"></image>
     </view>
     <view class="center">
       <view class="songName">{{song.name}}</view>
-      <view class="singerName">{{song.artists}}-{{song.name}}</view>
+      <view class="singerName">{{song.artists[0].name}}-{{song.name}}</view>
     </view>
     <view class="right">
     <navigator url="../play/play?mid={{song.id}}" hover-class="navigator-hover">
