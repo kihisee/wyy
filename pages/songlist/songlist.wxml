@@ -5,16 +5,12 @@
     </swiper-item>
   </block>
 </swiper>
-<view class="musicContainer">
-  <view class="left">
-    <image src="https://p1.music.126.net/_uEfeAcUZ_pUJMuNqH7LXw==/109951162821957253.jpg?param=200y200"></image>
+<view class="search_area">
+  <view class="search_input">
+    <input type="text" class="type" bindinput="getkeyword" />
   </view>
-  <view class="center">
-    <view class="songName">儿时ddd</view>
-    <view class="singerName">孫小東</view>
-  </view>
-  <view class="right">
-    <image src="../../images/play.png" bindtap="gotoPlay"></image>
+  <view class="search_button">
+    搜索
   </view>
 </view>
 <block wx:for="{{songs}}" wx:for-item="song" wx:key="key">

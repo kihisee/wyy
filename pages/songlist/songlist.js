@@ -90,5 +90,10 @@ Page({
     // wx.navigateTo({
     //   url: '../play/play?id='+songid,
     // })
+  },
+  getkeyword:function(e){
+   
+    var keyword = e.detail.value;
+    console.log(keyword)
   }
 })
