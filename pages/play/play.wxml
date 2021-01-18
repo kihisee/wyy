@@ -20,9 +20,11 @@
     </swiper>
   </view>
   <view class="controls">
-    <image src="../../images/prev.png"></image>
+    <image src="../../images/{{mode == 'single'?'single.png':'loop.png'}}" bindtap="changeMode"></image>
+    <image src="../../images/prev.png" bindtap="goPrev"></image>
     <image src="../../images/{{state=='play'?'pause':'play'}}.png" bindtap="playOrPause" ></image>
-    <image src="../../images/next.png"></image>
+    <image src="../../images/next.png" bindtap="goNext"></image>
+    <image src="../../images/unlike.png"></image>
   </view>
-  <audio action="{{action}}" src="https://music.163.com/song/media/outer/url?id={{id}}.mp3" bindtimeupdate="changeTime"></audio>
+  <audio action="{{action}}" bindended="changeMusic" src="https://music.163.com/song/media/outer/url?id={{id}}.mp3" bindtimeupdate="changeTime"></audio>
 </view>

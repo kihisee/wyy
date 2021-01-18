@@ -14,15 +14,24 @@ Page({
     lyricArray:[],
     scrollTop:0,
     currentIndex:0,
+    songIndex:0,
+    ids:[],
+    mode:'single',
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+   
+    
     var mid = options.mid
+    var index = options.index
+    var ids = (options.ids).split(",")
     this.setData({
-      id:mid
+      id:mid,
+      songIndex:index,
+      ids:ids
     })
     this.getSongInfoById()
     this.getLyricById()
@@ -39,7 +48,6 @@ Page({
         _this.setData({
           song:msong
         })
-        console.log(_this.data.song)
       },
       fail:function(){
         console.log(111)
@@ -135,16 +143,102 @@ Page({
     }else{
       for(var i=0;i<lyricArray.length-1;i++){
         if(currentTime>=lyricArray[i][0] && currentTime <lyricArray[i+1][0]){
-          console.log("in")
           this.setData({
             currentIndex:i
           })
-          console.log(this.currentIndex)
         }
       }
     }
 
     
+  },
+  goPrev(){
+    var index = this.data.songIndex;
+    console.log(index)
+    var ids = this.data.ids;
+    console.log(this.data.ids)
+    var id = 0
+    if(index==0){
+      return;
+      index=0;
+    }else{
+      id = ids[index-1]
+    }
+    this.setData({
+      id:id,
+      songIndex:index-1,
+      scrollTop:0,
+      currentIndex:0,
+    })
+    this.setData({
+      action:{
+        method:"play"
+      }
+    })
+    this.getSongInfoById()
+    this.getLyricById()
+  },
+  goNext(){
+    var index =parseInt(this.data.songIndex);
+    console.log(index+1)
+    var ids = this.data.ids;
+    console.log(ids[index])
+    var id = 0;
+    if(index==ids.length-1){
+      return;
+      index=ids.length-1;
+    }else{
+      
+      id = ids[index+1]
+      console.log(ids[index])
+    }
+    
+    this.setData({
+      id:id,
+      songIndex:index+1,
+      scrollTop:0,
+      currentIndex:0,
+    })
+    this.setData({
+      action:{
+        method:"play"
+      }
+    })
+    this.getSongInfoById()
+    this.getLyricById()
+  },
+
+  changeMode:function(){
+    var mode = this.data.mode;
+    if(mode == 'single'){
+      this.setData({
+        mode:'loop'
+      })
+    }else{
+      this.setData({
+        mode:'single'
+      })
+    }
+  },
+
+  changeMusic:function(){
+    var mode = this.data.mode;
+    if(mode == 'single'){
+      this.setData({
+        id:this.data.id
+      })
+      this.setData({
+        action:{
+          method:"play"
+        }
+      })
+    }else{
+      this.goNext()
+    }
+    this.setData({
+      scrollTop:0,
+      currentIndex:0,
+    })
   },
 
   /**

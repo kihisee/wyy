@@ -15,19 +15,10 @@ Page({
       'http://p1.music.126.net/MgYPKk4icLAP093ynNRdWg==/109951165603250362.jpg?imageView&quality=89',
       'http://p1.music.126.net/ZtaPwpy3QykGl9Px-spGLQ==/109951165603281785.jpg?imageView&quality=89'
     ],
-    songs:[
-      {
-        id:"446247878",
-        name:"",
-        album:{
-          picUrl:"",
-          name:"",
-        },
-        artists:"333"
-      }
-    ],
+    songs:[],
     kw:'',
-    albumPic:[]
+    albumPic:[],
+    ids:[]
   },
   /**
    * 生命周期函数--监听页面加载
@@ -86,9 +77,7 @@ Page({
   },
 
   gotoPlay:function(event){
-    console.log(234)
     var songid = event.currentTarget.dataset.songid;
-    console.log(event)
     // wx.navigateTo({
     //   url: '../play/play?id='+songid,
     // })
@@ -96,7 +85,6 @@ Page({
   getkeyword:function(e){
    
     var keyword = e.detail.value;
-    console.log(keyword)
     this.setData({
       kw:keyword
     })
@@ -110,15 +98,13 @@ Page({
       success:function(res){
 
         var songs = res.data.result.songs
-        for(var i=0;i<songs.length.length;i++){
-          console.log(songs[i].id)
-        }
         for(var val in songs){
           searchId.push(songs[val].id)
         }
         
         _this.setData({
-          songs:songs
+          songs:songs,
+          ids:searchId
         })
         _this.getMusicImg(searchId,0,searchId.length)
       }
@@ -136,7 +122,7 @@ Page({
         _this.setData({
           albumPic:albumPic
         })
-        console.log(albumPic)
+        
         if(++i<length){
           _this.getMusicImg(searchId,i,length)
         }

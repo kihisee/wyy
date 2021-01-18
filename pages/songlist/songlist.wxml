@@ -23,7 +23,7 @@
       <view class="singerName">{{song.artists[0].name}}-{{song.name}}</view>
     </view>
     <view class="right">
-    <navigator url="../play/play?mid={{song.id}}" hover-class="navigator-hover">
+    <navigator url="../play/play?mid={{song.id}}&ids={{ids}}&index={{i}}" hover-class="navigator-hover">
       <image src="../../images/play.png"   data-hi="Weixin" data-weather="weather"></image>
     </navigator>
     </view>
