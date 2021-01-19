@@ -17,6 +17,10 @@ Page({
     songIndex:0,
     ids:[],
     mode:'single',
+    endTime:'00:00',
+    playTime:'00:00',
+    move:0,
+    max:100,
   },
 
   /**
@@ -124,6 +128,37 @@ Page({
   },
   changeTime:function(e){
     var currentTime = e.detail.currentTime
+    var duration = e.detail.duration;
+    var move = currentTime;
+    var max = duration;
+    this.setData({
+      move:move,
+      max:max
+    })
+    
+    
+    var playMinutes =Math.floor(currentTime/60)
+    var playScounds = Math.floor(currentTime%60)
+    if(playMinutes<10){
+      playMinutes = '0'+playMinutes
+    }
+    if(playScounds<10){
+      playScounds = '0'+playScounds
+    }
+    var playTime = playMinutes+':'+playScounds;
+    var endMinutes =Math.floor(duration/60)
+    var endScounds = Math.floor(duration%60)
+    if(endMinutes<10){
+      endMinutes = '0'+endMinutes
+    }
+    if(endScounds<10){
+      endScounds = '0'+endScounds
+    }
+    var endTime = endMinutes+':'+endScounds;
+    this.setData({
+      endTime:endTime,
+      playTime:playTime
+    })
     var lyricArray = this.data.lyricArray;
     var _this = this
     //计算滚动条位置
@@ -151,6 +186,20 @@ Page({
     }
 
     
+  },
+  drag:function(e){
+    
+    var value = e.detail.value;
+    console.log(value)
+    this.setData({
+      move:value,
+    })
+    this.setData({
+      action:{
+        method:"setCurrentTime",
+        data:value
+      }
+    })
   },
   goPrev(){
     var index = this.data.songIndex;

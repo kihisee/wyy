@@ -19,12 +19,17 @@
       </swiper-item>
     </swiper>
   </view>
+  <view class="progress">
+    <view class="play_time">{{playTime}}</view>
+    <slider activeColor="#c20c0c" backgroundColor="#fff" block-size="16" value="{{move}}" max="{{max}}" bindchange="drag"></slider>
+    <view class="end_time">{{endTime}}</view>
+  </view>
   <view class="controls">
     <image src="../../images/{{mode == 'single'?'single.png':'loop.png'}}" bindtap="changeMode"></image>
     <image src="../../images/prev.png" bindtap="goPrev"></image>
     <image src="../../images/{{state=='play'?'pause':'play'}}.png" bindtap="playOrPause" ></image>
     <image src="../../images/next.png" bindtap="goNext"></image>
-    <image src="../../images/unlike.png"></image>
+    <image src="../../images/xin.png"></image>
   </view>
   <audio action="{{action}}" bindended="changeMusic" src="https://music.163.com/song/media/outer/url?id={{id}}.mp3" bindtimeupdate="changeTime"></audio>
 </view>

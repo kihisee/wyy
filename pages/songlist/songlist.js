@@ -116,6 +116,7 @@ Page({
     wx.request({
       url: 'https://music.163.com/api/song/detail/?id='+searchId[i]+'&ids=['+searchId[i]+']',
       success:function(res){
+        console.log(res)
         var albumPici=res.data.songs[0].album.picUrl
         var name=res.data.songs[0].album.name
         albumPic.push(albumPici)
