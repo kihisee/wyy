@@ -5,7 +5,7 @@
 .musicContainer{display:flex;width:100%;height:150rpx;background:#333;margin-top:10rpx;}
 .left{width:150rpx;height:150rpx;}
 .left image{width:140rpx;height:140rpx;margin:5rpx;border-radius:10%;}
-.center{width:450rpx;height:150rpx;}
+.center{position: relative;width:450rpx;height:150rpx;}
 .songName{color:#fff;font-size:42rpx;padding-left:24rpx;margin-top:20rpx;}
 .singerName{color:#fff;font-size:30rpx;padding-left:24rpx;margin-top:20rpx;}
 .right{width:150rpx;height:150rpx;}
@@ -15,3 +15,6 @@
 .search_input{width:590rpx;height:110rpx;background:#fff;}
 .search_input input{width:568rpx;height:108rpx;padding-left:20rpx;border:#f00 solid 1rpx;}
 .search_button{width:158rpx;height:110rpx;background:#ff5384;font-size:40rpx;text-align:center;line-height:110rpx;color:#fff;}
+
+.mv{height:80rpx;width:80rpx;position: absolute;right:10rpx;top:30rpx;}
+.mv image{width:100%;height:100%;}

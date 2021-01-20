@@ -2,7 +2,8 @@
   "pages":[
     "pages/songlist/songlist",
     "pages/play/play",
-    "pages/my/my"
+    "pages/my/my",
+    "pages/mv/mv"
   ],
   "window": {
     "backgroundTextStyle": "light",

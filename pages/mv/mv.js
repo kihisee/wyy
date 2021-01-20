@@ -1,30 +1,35 @@
-// pages/my/my.js
+// pages/mv/mv.js
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    user:null
+    brs:'',
   },
 
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var _this = this
-    wx.getUserInfo({
-      success: res => {
-        var user=null;
+   
+    var mvId = options.mvId
+    console.log(mvId)
+    this.getMvById(mvId)
+  },
+  getMvById:function(mvId){
+    var _this=this
+    wx.request({
+      url: 'https://api.mlwei.com/music/api/mv/?key=523077333&mv=163&type=info&id='+mvId,
+      success:function(res){
         console.log(res)
-        user=res.userInfo
+        var brs = res.data.data.brs[240]
         _this.setData({
-          user:user
+          brs:brs
         })
       }
     })
   },
-
   /**
    * 生命周期函数--监听页面初次渲染完成
    */

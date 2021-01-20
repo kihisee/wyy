@@ -18,7 +18,9 @@ Page({
     songs:[],
     kw:'',
     albumPic:[],
-    ids:[]
+    ids:[],
+    mvs:[],
+    limit:6,
   },
   /**
    * 生命周期函数--监听页面加载
@@ -66,7 +68,44 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    var kw = this.data.kw
+    var _this=this
+    var searchId=[]
+    var names=[]
+    var artists=[]
+    
+    var limit = this.data.limit;
+    limit=limit+5
+    this.setData({
+      limit:limit
+    })
+    console.log(limit)
+    if(kw!=""){
+      wx.showLoading({
+        title:"来了，老弟"
+      })
+      wx.request({
+        url: 'https://music.163.com/api/search/get?s='+kw+'&type=1&limit='+_this.data.limit,
+        success:function(res){
+          var songs = res.data.result.songs
+          _this.setData({
+            songs:songs
+          })
+          for(var val in songs){
+            searchId.push(songs[val].id)
+            names.push(songs[val].name)
+            artists.push(songs[val].artists[0].id)
+          }f
+          _this.setData({
+            albumPic:[],
+            mvs:[],
+          })
+          _this.getMusicImg(searchId,0,searchId.length)
+          _this.getMvBySongName(names,0,names.length,artists)
+          wx.hideLoading()
+        }
+      })
+    }
   },
 
   /**
@@ -93,20 +132,61 @@ Page({
     var kw = this.data.kw
     var _this = this;
     var searchId=[]
+    var names=[]
+    var artists = []
     wx.request({
-      url: 'https://music.163.com/api/search/get?s='+kw+'&type=1&limit=6',
+      url: 'https://music.163.com/api/search/get?s='+kw+'&type=1&limit='+_this.data.limit,
       success:function(res){
 
         var songs = res.data.result.songs
         for(var val in songs){
           searchId.push(songs[val].id)
-        }
-        
+          names.push(songs[val].name)
+          artists.push(songs[val].artists[0].id)
+        }f
         _this.setData({
-          songs:songs,
-          ids:searchId
+          albumPic:[],
+          mvs:[],
         })
         _this.getMusicImg(searchId,0,searchId.length)
+        _this.getMvBySongName(names,0,names.length,artists)
+        _this.setData({
+          songs:songs,
+          ids:searchId,
+          
+        })
+      }
+      
+    })
+  },
+  getMvBySongName:function(name,i,length,artists){
+    var mvs = this.data.mvs
+    var _this=this
+    wx.request({
+      url: 'https://api.mlwei.com/music/api/mv/?key=523077333&mv=163&type=so&word='+name[i]+'&page=1',
+      success:function(res){
+        var result = res.data.result.mvs
+        if(result !=undefined){
+          var flag = false;
+          for(var j=0;j<result.length;j++){
+            if(artists[i]==result[j].artistId){
+              mvs.push(result[j].id)
+              flag=true
+              break
+            }
+          }
+        }
+        if(!flag){
+          mvs.push(-1)
+        }
+        _this.setData({
+          mvs:mvs
+        })
+        
+        if(++i<length){
+          _this.getMvBySongName(name,i,length,artists)
+        }
+        
       }
     })
   },
@@ -129,6 +209,12 @@ Page({
         }
       }
     })
+  },
+  go_mv:function(e){
+    var mvId=e.currentTarget.dataset.mvid
+    console.log(mvId)
+    wx.navigateTo({
+      url: '../mv/mv?mvId='+mvId,
+    })
   }
-    
 })

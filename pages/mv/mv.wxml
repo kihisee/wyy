@@ -1,0 +1,4 @@
+<!--pages/mv/mv.wxml-->
+<view>
+  <video src="{{brs}}"></video>
+</view>
